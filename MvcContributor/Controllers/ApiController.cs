@@ -191,10 +191,10 @@ namespace MvcContributor.Controllers
                     db.Entry(tmdbPerson).State = EntityState.Modified;
                     db.SaveChanges();
                 }
-                else
-                {
-                    return View(tmdbPerson);
-                }
+                //else
+                //{
+                //    return View(tmdbPerson);
+                //}
                 Contributor contributor = new Contributor
                 {
                     Name = tmdbPerson.Name,
