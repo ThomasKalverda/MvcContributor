@@ -4,11 +4,6 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
-
-<p>
-    @Html.ActionLink("Create New", "Create")
-
     @using (Html.BeginForm())
     {
         <div class="row">
@@ -16,17 +11,19 @@
                 @Html.TextBox("SearchString", null, new { @class = "form-control" })
             </div>
             <div class="col-md-3">
-                <input type="submit" class="btn btn-outline-success" value="Search" /><span class="glyphicon glyphicon-search"></span>
+                <input type="submit" class="btn btn-outline-warning" value="Search" />
             </div>
+            @*<div>
+                <button class="btn btn-outline-danger"><i class="material-icons">accessibility</i></button>
+            </div>*@
             <div class="col-3">
-                <input type="button" class="btn btn-outline-info" value="Create New" onclick="location.href='@Url.Action("Create", "Contributors")'" />
-                @*<button class="btn btn-outline-danger" value="Create New" id="Create"></button>*@
+                <input type="button" class="btn btn-outline-success" value="Create New" onclick="location.href='@Url.Action("Create", "Contributors")'" />
             </div>
         </div>
         <hr>
     }
         
-            <table class="table table-sm">
+            <table class="table table-sm thead-light">
                 <tr>
                     <th>
                         @Html.DisplayNameFor(model => model.Name)
@@ -44,7 +41,7 @@
                 </tr>
 
                 @foreach (var item in Model)
-        {
+                {
             <tr>
                 <td>
                     @Html.DisplayFor(modelItem => item.Name)
@@ -59,9 +56,8 @@
                 @Html.DisplayFor(modelItem => item.Biography)
             </td>*@
                 <td>
-                    @Html.ActionLink("Edit", "Edit", new { id = item.ID }) |
-                    @Html.ActionLink("Details", "Details", new { id = item.ID }) |
-                    @Html.ActionLink("Delete", "Delete", new { id = item.ID })
+                    <button type="button" class="btn btn-outline-info col-3" value="Edit" onclick="location.href='@Url.Action("Edit", "Contributors", new { id = item.ID })'">Edit</button>
+                    <button type="button" class="btn btn-outline-danger col-3" value="Delete" onclick="location.href='@Url.Action("Delete", "Contributors", new { id = item.ID })'">Delete</button>
                 </td>
             </tr>
 }
