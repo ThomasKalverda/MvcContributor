@@ -4,7 +4,6 @@
     ViewBag.Title = "PersonDetails";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-@*adfasdfadfvad*@
 <h2>Person details from The Movie DB</h2>
 <hr />
 @{ int listLength = Model.ImageList.Count(); }
@@ -125,6 +124,7 @@
                 </div>
                 <div class="form-group row">
                     @Html.LabelFor(model => model.Biography, htmlAttributes: new { @class = "control-label col-12" })
+                    @*<small id="emailHelp" class="form-text text-muted col-12">max. 250 characters</small>*@
                     <div class="col-12">
                         @Html.TextAreaFor(model => model.Biography, new { @class = "form-control", @rows = 4 })
                         @Html.ValidationMessageFor(model => model.Biography, "", new { @class = "text-danger" })
