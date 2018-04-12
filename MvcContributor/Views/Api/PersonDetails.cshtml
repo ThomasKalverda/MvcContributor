@@ -1,0 +1,201 @@
+﻿@model MvcContributor.Models.TmdbPerson
+
+@{
+    ViewBag.Title = "PersonDetails";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Person details from The Movie DB</h2>
+<hr />
+@{ int listLength = Model.ImageList.Count(); }
+<input type="hidden" id="listLength" value="@listLength" />
+
+@{ string id = "";
+    string saveid = "";
+    for (int i = 0; i < listLength; i++)
+    {
+        id = "imagelist" + i;
+        saveid = "save" + i;
+        string savepath = Model.ImageList[i].FilePath;
+        string imgpath = "https://image.tmdb.org/t/p/w500" + savepath;
+        <input type="hidden" id="@saveid" value="@savepath" />
+        <input type="hidden" id="@id" value="@imgpath" />
+    }
+}
+<p></p>
+@section Scripts
+{
+<script>
+    
+        $(document).ready(function () {
+            var text_max = 250;
+            var text_length = $('#Biography').val().length;
+            var text_remaining = text_max - text_length;
+            $('#textareafeedback').html(text_remaining + '/250 characters');
+
+            $('#Biography').keyup(function () {
+                var text_length = $('#Biography').val().length;
+                var text_remaining = text_max - text_length;
+
+                $('#textareafeedback').html(text_remaining + '/250 characters');
+            });
+        
+
+        var Counter = 0;
+        var listlength = $('#listLength').prop('value');
+        $("#Next").click(function () {
+            if (Counter < listlength - 1) {
+                Counter++;
+            }
+            else {
+                Counter = 0;
+            }
+            var source = "imagelist" + Counter;
+            var savesource = "save" + Counter;
+            var gethiddenfield = $('#' + source).prop('value');
+            var getsavepath = $('#' + savesource).prop('value');
+            $("#previewimage").attr('src', gethiddenfield);
+            $("#completeimage").attr('src', gethiddenfield);
+            $("#ProfilePath").val(getsavepath);
+
+        });
+        $("#Prev").click(function () {
+            if (Counter == 0) {
+                Counter = listlength - 1;
+            }
+            else {
+                Counter--;
+            }
+            var source = "imagelist" + Counter;
+            var gethiddenfield = $('#' + source).prop('value');
+
+            var source = "imagelist" + Counter;
+            var savesource = "save" + Counter;
+            var gethiddenfield = $('#' + source).prop('value');
+            var getsavepath = $('#' + savesource).prop('value');
+            $("#previewimage").attr('src', gethiddenfield);
+            $("#completeimage").attr('src', gethiddenfield);
+            $("#ProfilePath").val(getsavepath);
+            });
+        });
+        
+    </script>
+}
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+
+
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.Id)
+        @Html.HiddenFor(model => model.ImdbID)
+        @Html.HiddenFor(model => model.TmdbID)
+        @Html.HiddenFor(model => model.ProfilePath)
+        @Html.HiddenFor(model => model.Popularity)
+        @Html.HiddenFor(model => model.ImageList)
+        <div class="row">
+            <div class="col-6">
+
+                <div class="form-group row">
+                    @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-6" })
+                    @Html.LabelFor(model => model.BirthName, htmlAttributes: new { @class = "control-label col-6" })
+                    <div class="col-6">
+                        @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="col-6">
+                        @Html.EditorFor(model => model.BirthName, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.BirthName, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    @Html.LabelFor(model => model.BirthDate, htmlAttributes: new { @class = "control-label col-6" })
+                    @Html.LabelFor(model => model.PlaceOfBirth, htmlAttributes: new { @class = "control-label col-6" })
+                    <div class="col-6">
+                        @Html.EditorFor(model => model.BirthDate, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.BirthDate, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="col-6">
+                        @Html.EditorFor(model => model.PlaceOfBirth, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.PlaceOfBirth, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group row">
+                    @Html.LabelFor(model => model.Biography, htmlAttributes: new { @class = "control-label col-12" })
+                    <div class="col-12">
+                        @Html.TextAreaFor(model => model.Biography, new { @class = "form-control", @rows = 4 })
+                        @Html.ValidationMessageFor(model => model.Biography, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <p class="col-6" id="textareafeedback"></p>
+                <div class="form-group row">
+
+                    <div class="col-12">
+                        @Html.HiddenFor(model => model.ProfilePath, new { @class = "form-control" })
+
+                    </div>
+                </div>
+                <div class="form-group row justify-content-center">
+                    <div class="col-3">
+                        <input type="submit" value="Create Contributor" name="SubmitButton" class="btn btn-outline-success" />
+                    </div>
+                    <div class="col-3">
+
+                        <button type="button" class="btn btn-outline-primary col-12" value="Cancel" href="javascript:void(0);" onclick="history.go(-1);" @*onclick="location.href='@Url.Action("Results", "Api", new { })'"*@>Cancel</button>
+                    </div>
+                </div>
+            </div>
+
+            @*Images*@
+            <div class="col-6">
+                @{
+
+            string imgPath = "~/Content/Images/preview.jpg";
+            if (Model.ProfilePath != null)
+            {
+                imgPath = "https://image.tmdb.org/t/p/w500" + Model.ProfilePath;
+            }
+                }
+                <div class="row">
+                    <div class="col-6">
+                        <h3>Image</h3>
+                        <div style="
+                            position: relative;
+                            width: 200px;
+                            height: auto;">
+                            <img id="completeimage" src="@imgPath" style="width: 100%;height: auto;" alt="IMAGE" />
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <h3>Preview headshot</h3>
+                        <div style="
+                            position: relative;
+                            width: 200px;
+                            height: 200px;
+                            overflow: hidden;
+                            border-radius: 50%;">
+                            <img id="previewimage" src="@imgPath" style="width: 100%;height: auto;" alt="IMAGE" />
+                        </div>
+                    </div>
+
+                </div>
+                <br />
+                <div class="row" style="margin-left: 50px">
+                    <div class="btn-group" role="group">
+                        <button type="button" id="Prev" class="btn btn-outline-info btn-lg">< </button>
+                        <button type="button" id="Next" class="btn btn-outline-info btn-lg"> ></button>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+
+       
+    </div>
+}
+

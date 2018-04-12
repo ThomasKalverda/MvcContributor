@@ -58,6 +58,12 @@
       <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.8\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="PagedList, Version=1.17.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\PagedList.1.17.0.0\lib\net40\PagedList.dll</HintPath>
+    </Reference>
+    <Reference Include="PagedList.Mvc, Version=4.5.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\PagedList.Mvc.4.5.0.0\lib\net40\PagedList.Mvc.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -150,6 +156,8 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Class\TMDBSearchPerson.cs" />
+    <Compile Include="Controllers\ApiController.cs" />
     <Compile Include="Controllers\ContributorsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">
@@ -183,6 +191,22 @@
     <Compile Include="Migrations\201803221117394_add-migration deletefiletypes.Designer.cs">
       <DependentUpon>201803221117394_add-migration deletefiletypes.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201803251231163_birthname.cs" />
+    <Compile Include="Migrations\201803251231163_birthname.Designer.cs">
+      <DependentUpon>201803251231163_birthname.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201803251410120_imagepath.cs" />
+    <Compile Include="Migrations\201803251410120_imagepath.Designer.cs">
+      <DependentUpon>201803251410120_imagepath.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201803281333013_tmdbdatabase.cs" />
+    <Compile Include="Migrations\201803281333013_tmdbdatabase.Designer.cs">
+      <DependentUpon>201803281333013_tmdbdatabase.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201803281338313_tmdb2.cs" />
+    <Compile Include="Migrations\201803281338313_tmdb2.Designer.cs">
+      <DependentUpon>201803281338313_tmdb2.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Contributor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -196,6 +220,7 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\fonts\octicons.svg" />
     <Content Include="Content\octicons.css" />
+    <Content Include="Content\PagedList.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
@@ -280,6 +305,10 @@
     <Content Include="Scripts\popper-utils.js.map" />
     <Content Include="Views\Contributors\EditPartial.cshtml" />
     <Content Include="Views\Shared\Table.cshtml" />
+    <Content Include="Views\Api\Index.cshtml" />
+    <Content Include="Views\Api\Results.cshtml" />
+    <Content Include="Views\Api\Edit.cshtml" />
+    <Content Include="Views\Api\PersonDetails.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -309,6 +338,18 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201803221117394_add-migration deletefiletypes.resx">
       <DependentUpon>201803221117394_add-migration deletefiletypes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201803251231163_birthname.resx">
+      <DependentUpon>201803251231163_birthname.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201803251410120_imagepath.resx">
+      <DependentUpon>201803251410120_imagepath.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201803281333013_tmdbdatabase.resx">
+      <DependentUpon>201803281333013_tmdbdatabase.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201803281338313_tmdb2.resx">
+      <DependentUpon>201803281338313_tmdb2.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

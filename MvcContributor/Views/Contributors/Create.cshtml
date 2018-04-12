@@ -4,14 +4,108 @@
     ViewBag.Title = "Create";
 }
 
-<h2>Create</h2>
 
 
-@using (Html.BeginForm()) 
+@using (Html.BeginForm("Create", "Contributors", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
-    
-<div class="form-horizontal">
+    <div class="row">
+        <div class="col-8">
+            <h4>Create contributor</h4>
+            <button type="button" class="btn btn-outline-info" onclick="location.href='@Url.Action("Index", "Api")'">Get from <em>TMDB</em></button>
+            <hr />
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @Html.HiddenFor(model => model.ID)
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-2" })
+                <div class="col-12">
+                    @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.BirthName, htmlAttributes: new { @class = "control-label col-2" })
+                <div class="col-12">
+                    @Html.EditorFor(model => model.BirthName, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.BirthName, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.BirthDate, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-12">
+                    @Html.EditorFor(model => model.BirthDate, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.BirthDate, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.BirthPlace, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-12">
+                    @Html.EditorFor(model => model.BirthPlace, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.BirthPlace, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Biography, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-12">
+                    @Html.TextAreaFor(model => model.Biography, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Biography, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <p class="col-6" id="textareafeedback"></p>
+            @Html.HiddenFor(model => model.ImagePath)
+
+            <div class="form-group row justify-content-center">
+                <input type="file" name="file" id="file" class="col-6" />
+                <input type="submit" value="Upload" name="SubmitButton" class="btn btn-outline-warning col-2" />
+            </div>
+            @ViewBag.Message
+            <div class="form-group row justify-content-center">
+                <div class="col-3">
+                    <input type="submit" value="Create" name="SubmitButton" class="btn btn-outline-success" />
+                </div>
+                <div class="col-3">
+                    <button type="button" class="btn btn-outline-primary col-12" value="Cancel" href="javascript:void(0);" onclick="history.go(-1);">Cancel</button>
+                </div>
+            </div>
+
+        </div>
+        <div class="col-4">
+
+            <div>
+                <h3>Preview headshot</h3>
+                <div style="
+                position: relative;
+                width: 300px;
+                height: 300px;
+                overflow: hidden;
+                border-radius: 50%;">
+                    <img src="~/Content/Images/preview.jpg" style="width: 100%;height: auto;" alt="IMAGE" />
+                    @*@{
+                        var filename = "Headshot_ID_" + Model.ID + ".jpg";
+                        string path = "~/Content/Images/" + filename;
+                        if (System.IO.File.Exists(Server.MapPath(path)))
+                        {
+                            <img src="/Content/Images/@filename" style="width: 100%;height: auto;" alt="IMAGE" />
+                        }
+                        else
+                        {
+                            
+                        }
+                    }*@
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+}
+@*<div class="form-horizontal">
     <h4>Contributor</h4>
     <hr />
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
@@ -20,6 +114,14 @@
         <div class="col-md-10">
             @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
             @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.BirthName, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.BirthName, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.BirthName, "", new { @class = "text-danger" })
         </div>
     </div>
 
@@ -47,13 +149,7 @@
         </div>
     </div>
 
-    <div class="form-group">
-        @Html.LabelFor(model => model.ImageURL, new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.ImageURL, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.ImageURL, "", new { @class = "text-danger" })
-        </div>
-    </div>
+
 
     <div class="form-group">
         <div class="col-md-offset-2 col-md-10">
@@ -65,8 +161,24 @@
 
 <div>
     @Html.ActionLink("Back to List", "Index")
-</div>
+</div>*@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+
+    <script>
+        $(document).ready(function () {
+            var text_max = 250;
+            var text_length = $('#Biography').val().length;
+            var text_remaining = text_max - text_length;
+            $('#textareafeedback').html(text_remaining + '/250 characters');
+
+            $('#Biography').keyup(function () {
+                var text_length = $('#Biography').val().length;
+                var text_remaining = text_max - text_length;
+
+                $('#textareafeedback').html(text_remaining + '/250 characters');
+            });
+        });
+    </script>
 }

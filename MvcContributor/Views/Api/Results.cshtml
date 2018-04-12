@@ -1,0 +1,451 @@
+﻿@model IList<MvcContributor.Models.TmdbPerson>
+
+@{
+    ViewBag.Title = "Results";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Results from TheMovieDB</h2>
+
+<p>@Model.Count()</p>
+@using (Html.BeginForm("Index", "Api"))
+{
+    <div class="col-9 input-group">
+        @Html.TextBox("SearchString"@*, ViewBag.CurrentFilter as string*@, null, new { @class = "form-control", @placeholder = "Search" })
+        <div class="input-group-append">
+            <button class="btn btn-outline-warning" type="submit" value="Search">
+                <i class="small material-icons">search</i>
+            </button>
+        </div>
+    </div>
+}
+<br>
+@{
+    var listlength = Model.Count();
+    var rows = 1;
+    if (listlength > 15)
+    {
+        rows = 4;
+    }
+    else if (listlength > 10)
+    {
+        rows = 3;
+    }
+    else if (listlength > 5)
+    {
+        rows = 2;
+    }
+
+    for (int row = 1; row < rows + 1; row++)
+    {
+        switch (row)
+        {
+            case 1:
+                <div class="card-deck">
+                    @for (int i = 0; i < (Math.Min(5, listlength)); i++)
+                    {
+                        string imgpath = "/Content/Images/no-image.jpg";
+                        if (Model[i].ProfilePath != null)
+                        {
+                            imgpath = "https://image.tmdb.org/t/p/w500" + Model[i].ProfilePath;
+                        }
+                        <div class="card text-center" style="max-width: 13rem;">
+                            <img class="card-img-top" src="@imgpath" alt="Card image cap" onclick="location.href='@Url.Action("PersonDetails", "Api", new { id = Model[i].Id })'">
+                            <div class="card-body">
+                                <h5 class="card-title">@Model[i].Name</h5>
+                                <button type="button" class="btn btn-outline-info col-12" value="Edit" onclick="location.href='@Url.Action("PersonDetails", "Api", new { id = Model[i].Id })'">Details</button>
+
+                            </div>
+                        </div>
+                    }
+                </div>
+                <br />
+                break;
+            case 2:
+                <div class="card-deck">
+                    @for (int i = 5; i < (Math.Min(10, listlength)); i++)
+                    {
+                        string imgpath = "/Content/Images/no-image.jpg";
+                        if (Model[i].ProfilePath != null)
+                        {
+                            imgpath = "https://image.tmdb.org/t/p/w500" + Model[i].ProfilePath;
+                        }
+                        <div class="card text-center" style="max-width: 13rem;">
+                            <img class="card-img-top" src="@imgpath" alt="Card image cap" onclick="location.href='@Url.Action("PersonDetails", "Api", new { id = Model[i].Id })'">
+                            <div class="card-body">
+                                <h5 class="card-title">@Model[i].Name</h5>
+                                <button type="button" class="btn btn-outline-info col-12" value="Edit" onclick="location.href='@Url.Action("PersonDetails", "Api", new { id = Model[i].Id })'">Details</button>
+
+                            </div>
+                        </div>
+                    }
+                </div>
+                <br />
+                break;
+            case 3:
+                <div class="card-deck">
+                    @for (int i = 10; i < (Math.Min(15, listlength)); i++)
+                    {
+                        string imgpath = "/Content/Images/no-image.jpg";
+                        if (Model[i].ProfilePath != null)
+                        {
+                            imgpath = "https://image.tmdb.org/t/p/w500" + Model[i].ProfilePath;
+                        }
+                        <div class="card text-center" style="max-width: 13rem;">
+                            <img class="card-img-top" src="@imgpath" alt="Card image cap" onclick="location.href='@Url.Action("PersonDetails", "Api", new { id = Model[i].Id })'">
+                            <div class="card-body">
+                                <h5 class="card-title">@Model[i].Name</h5>
+                                <button type="button" class="btn btn-outline-info col-12" value="Edit" onclick="location.href='@Url.Action("PersonDetails", "Api", new { id = Model[i].Id })'">Details</button>
+
+                            </div>
+                        </div>
+                    }
+                </div>
+                <br />
+                break;
+            case 4:
+                <div class="card-deck">
+                    @for (int i = 15; i < (Math.Min(20, listlength)); i++)
+                    {
+                        string imgpath = "/Content/Images/no-image.jpg";
+                        if (Model[i].ProfilePath != null)
+                        {
+                            imgpath = "https://image.tmdb.org/t/p/w500" + Model[i].ProfilePath;
+                        }
+                        <div class="card text-center" style="max-width: 13rem;">
+                            <img class="card-img-top" src="@imgpath" alt="Card image cap" onclick="location.href='@Url.Action("PersonDetails", "Api", new { id = Model[i].Id })'">
+                            <div class="card-body">
+                                <h5 class="card-title">@Model[i].Name</h5>
+                                <button type="button" class="btn btn-outline-info col-12" value="Edit" onclick="location.href='@Url.Action("PersonDetails", "Api", new { id = Model[i].Id })'">Details</button>
+
+                            </div>
+                        </div>
+                    }
+                </div>
+                <br />
+                break;
+
+            default:
+                break;
+
+        }
+    }
+}
+@*<table>
+                <tbody>
+                    <tr>
+                        <td class="align-bottom">
+                            @if (Model.Count() > 0)
+            {
+                string imgpath = "/Content/Images/no-image.jpg";
+                if (Model[0].ProfilePath != null)
+                {
+                    imgpath = "https://image.tmdb.org/t/p/w500" + Model[0].ProfilePath;
+                }
+                    <div class="card" style="width: 10rem;">
+                        <img class="card-img-top" src="@imgpath" alt="Card image cap">
+                        <div class="card-body">
+                            <h5 class="card-title">@Model[0].Name</h5>
+                            <button type="button" class="btn btn-sm btn-outline-info align-content-end" value="Edit" onclick="location.href='@Url.Action("PersonDetails", "Api", new { id = Model[0].Id })'">Details</button>
+                            <a href="#" class="btn btn-primary">Details</a>
+                        </div>
+                    </div>
+    }
+                        </td>
+                        <td class="align-bottom">
+                            @if (Model.Count() > 1)
+        {
+            string imgpath = "/Content/Images/no-image.jpg";
+            if (Model[1].ProfilePath != null)
+            {
+                imgpath = "https://image.tmdb.org/t/p/w500" + Model[1].ProfilePath;
+            }
+                    <div class="card" style="width: 15rem;">
+                        <img class="card-img-top" src="@imgpath" alt="Card image cap">
+                        <div class="card-body">
+                            <h5 class="card-title">@Model[1].Name</h5>
+
+                            <a href="#" class="btn btn-primary">Go somewhere</a>
+                        </div>
+                    </div>
+    }
+                        </td>
+                        <td class="align-bottom">
+                            @if (Model.Count() > 2)
+        {
+            string imgpath = "/Content/Images/no-image.jpg";
+            if (Model[2].ProfilePath != null)
+            {
+                imgpath = "https://image.tmdb.org/t/p/w500" + Model[2].ProfilePath;
+            }
+                    <div class="card" style="width: 15rem;">
+                        <img class="card-img-top" src="@imgpath" alt="Card image cap">
+                        <div class="card-body">
+                            <h5 class="card-title">@Model[2].Name</h5>
+
+                            <a href="#" class="btn btn-primary">Go somewhere</a>
+                        </div>
+                    </div>
+    }
+                        </td>
+                        <td class="align-bottom">
+                            @if (Model.Count() > 3)
+        {
+            string imgpath = "/Content/Images/no-image.jpg";
+            if (Model[3].ProfilePath != null)
+            {
+                imgpath = "https://image.tmdb.org/t/p/w500" + Model[3].ProfilePath;
+            }
+                    <div class="card" style="width: 15rem;">
+                        <img class="card-img-top" src="@imgpath" alt="Card image cap">
+                        <div class="card-body">
+                            <h5 class="card-title">@Model[3].Name</h5>
+
+                            <a href="#" class="btn btn-primary">Go somewhere</a>
+                        </div>
+                    </div>
+    }
+                        </td>
+                        <td class="align-bottom">
+                            @if (Model.Count() > 4)
+        {
+            string imgpath = "/Content/Images/no-image.jpg";
+            if (Model[4].ProfilePath != null)
+            {
+                imgpath = "https://image.tmdb.org/t/p/w500" + Model[4].ProfilePath;
+            }
+                    <div class="card" style="width: 15rem;">
+                        <img class="card-img-top" src="@imgpath" alt="Card image cap">
+                        <div class="card-body">
+                            <h5 class="card-title">@Model[4].Name</h5>
+
+                            <a href="#" class="btn btn-primary">Go somewhere</a>
+                        </div>
+                    </div>
+    }
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td class="align-bottom">
+                            @if (Model.Count() > 5)
+        {
+            string imgpath = "/Content/Images/no-image.jpg";
+            if (Model[5].ProfilePath != null)
+            {
+                imgpath = "https://image.tmdb.org/t/p/w500" + Model[5].ProfilePath;
+            }
+                    <div class="card" style="width: 15rem;">
+                        <img class="card-img-top" src="@imgpath" alt="Card image cap">
+                        <div class="card-body">
+                            <h5 class="card-title">@Model[5].Name</h5>
+
+                            <a href="#" class="btn btn-primary">Go somewhere</a>
+                        </div>
+                    </div>
+    }
+                        </td>
+                        <td class="align-bottom">
+                            @if (Model.Count() > 6)
+        {
+            string imgpath = "/Content/Images/no-image.jpg";
+            if (Model[6].ProfilePath != null)
+            {
+                imgpath = "https://image.tmdb.org/t/p/w500" + Model[6].ProfilePath;
+            }
+                    <div class="card" style="width: 15rem;">
+                        <img class="card-img-top" src="@imgpath" alt="Card image cap">
+                        <div class="card-body">
+                            <h5 class="card-title">@Model[6].Name</h5>
+
+                            <a href="#" class="btn btn-primary">Go somewhere</a>
+                        </div>
+                    </div>
+    }
+                        </td>
+                        <td class="align-bottom">
+                            @if (Model.Count() > 7)
+        {
+            string imgpath = "/Content/Images/no-image.jpg";
+            if (Model[7].ProfilePath != null)
+            {
+                imgpath = "https://image.tmdb.org/t/p/w500" + Model[7].ProfilePath;
+            }
+                    <div class="card" style="width: 15rem;">
+                        <img class="card-img-top" src="@imgpath" alt="Card image cap">
+                        <div class="card-body">
+                            <h5 class="card-title">@Model[7].Name</h5>
+
+                            <a href="#" class="btn btn-primary">Go somewhere</a>
+                        </div>
+                    </div>
+    }
+                        </td>
+                        <td class="align-bottom">
+                            @if (Model.Count() > 8)
+        {
+            string imgpath = "/Content/Images/no-image.jpg";
+            if (Model[8].ProfilePath != null)
+            {
+                imgpath = "https://image.tmdb.org/t/p/w500" + Model[8].ProfilePath;
+            }
+                    <div class="card" style="width: 15rem;">
+                        <img class="card-img-top" src="@imgpath" alt="Card image cap">
+                        <div class="card-body">
+                            <h5 class="card-title">@Model[8].Name</h5>
+
+                            <a href="#" class="btn btn-primary">Go somewhere</a>
+                        </div>
+                    </div>
+    }
+                        </td>
+                        <td class="align-bottom">
+                            @if (Model.Count() > 9)
+        {
+            string imgpath = "/Content/Images/no-image.jpg";
+            if (Model[9].ProfilePath != null)
+            {
+                imgpath = "https://image.tmdb.org/t/p/w500" + Model[9].ProfilePath;
+            }
+                    <div class="card" style="width: 15rem;">
+                        <img class="card-img-top" src="@imgpath" alt="Card image cap">
+                        <div class="card-body">
+                            <h5 class="card-title">@Model[9].Name</h5>
+
+                            <a href="#" class="btn btn-primary">Go somewhere</a>
+                        </div>
+                    </div>
+    }
+                        </td>
+
+                    </tr>
+                </tbody>
+            </table>*@
+
+
+
+@*<div class="card-deck col-9">
+            @for (var i = 0; i < listlength; i++)
+            {
+                string imgpath = "/Content/Images/no-image.jpg";
+                if (Model[i].ProfilePath != null)
+                {
+                    imgpath = "https://image.tmdb.org/t/p/w500" + Model[i].ProfilePath;
+                }
+                <div class="card" style="width: 10rem;">
+                    <img class="card-img-top" src="@imgpath" alt="Card image cap">
+                    <div class="card-body">
+                        <h5 class="card-title">@Model[i].Name</h5>
+
+                        <a href="#" class="btn btn-primary">Go somewhere</a>
+                    </div>
+                </div>
+            }
+
+        </div>
+
+        if (listlength > 5)
+        {
+            <div class="card-deck col-9">
+                @for (var i = 5; i < listlength; i++)
+                {
+                    string imgpath = "/Content/Images/no-image.jpg";
+                    if (Model[i].ProfilePath != null)
+                    {
+                        imgpath = "https://image.tmdb.org/t/p/w500" + Model[i].ProfilePath;
+                    }
+                    <div class="card" style="width: 10rem;">
+                        <img class="card-img-top" src="@imgpath" alt="Card image cap">
+                        <div class="card-body">
+                            <h5 class="card-title">@Model[i].Name</h5>
+
+                            <a href="#" class="btn btn-primary">Go somewhere</a>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+        if (listlength > 10)
+        {
+            <div class="card-deck col-9">
+                @for (var i = 10; i < listlength; i++)
+                {
+                    string imgpath = "/Content/Images/no-image.jpg";
+                    if (Model[i].ProfilePath != null)
+                    {
+                        imgpath = "https://image.tmdb.org/t/p/w500" + Model[i].ProfilePath;
+                    }
+                    <div class="card" style="width: 10rem;">
+                        <img class="card-img-top" src="@imgpath" alt="Card image cap">
+                        <div class="card-body">
+                            <h5 class="card-title">@Model[i].Name</h5>
+
+                            <a href="#" class="btn btn-primary">Go somewhere</a>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+        if (listlength > 15)
+        {
+            <div class="card-deck col-9">
+                @for (var i = 15; i < listlength; i++)
+                {
+                    string imgpath = "/Content/Images/no-image.jpg";
+                    if (Model[i].ProfilePath != null)
+                    {
+                        imgpath = "https://image.tmdb.org/t/p/w500" + Model[i].ProfilePath;
+                    }
+                    <div class="card" style="width: 10rem;">
+                        <img class="card-img-top" src="@imgpath" alt="Card image cap">
+                        <div class="card-body">
+                            <h5 class="card-title">@Model[i].Name</h5>
+
+                            <a href="#" class="btn btn-primary">Go somewhere</a>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+
+    }*@
+
+
+@*<table class="table">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Name)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Popularity)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ProfilePath)
+                </th>
+                <th></th>
+            </tr>
+
+            @foreach (var item in Model)
+    {
+                <tr>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Popularity)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ProfilePath)
+                    </td>
+
+                    <td>
+                        @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                        @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+                        @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                    </td>
+                </tr>
+            }
+
+        </table>*@

@@ -13,20 +13,35 @@ namespace MvcContributor
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
+            //routes.MapRoute(
+            //    name: "Table",
+            //    url: "Contributor/Details/{id}",
+            //    defaults: new { controller = "Contributors", action = "Details", id = UrlParameter.Optional }
+            //);
+            // routes.MapRoute(
+            //     name: "Upload",
+            //     url: "Contributor/Edit/{id}",
+            //     defaults: new { controller = "Contributors", action = "Upload", id = UrlParameter.Optional }
+            //);
+            //routes.MapRoute(
+            //    name: "Details",
+            //    url: "Contributor/Details/{id}",
+            //    defaults: new { controller = "Contributors", action = "Details", id = UrlParameter.Optional }
+            //);
+            //routes.MapRoute(
+            //    name: "Api",
+            //    url: "Api/Results/{id}",
+            //    defaults: new { controller = "Api", action = "Index", id = UrlParameter.Optional }
+            //);
             routes.MapRoute(
-                name: "Table",
-                url: "Contributor/Details/{id}",
-                defaults: new { controller = "Contributors", action = "Details", id = UrlParameter.Optional }
+                name: "ShowNext",
+                url: "Api/ShowNextImage",
+                defaults: new { controller = "Api", action = "ShowNextImage", id = UrlParameter.Optional }
             );
             routes.MapRoute(
-                name: "Upload",
-                url: "Contributor/Edit/{id}",
-                defaults: new { controller = "Contributors", action = "Upload", id = UrlParameter.Optional }
-           );
-            routes.MapRoute(
-                name: "Details",
-                url: "Contributor/Details/{id}",
-                defaults: new { controller = "Contributors", action = "Details", id = UrlParameter.Optional }
+                name: "ShowPrev",
+                url: "Api/ShowPrevImage",
+                defaults: new { controller = "Api", action = "ShowPrevImage", id = UrlParameter.Optional }
             );
             routes.MapRoute(
                 name: "Default",

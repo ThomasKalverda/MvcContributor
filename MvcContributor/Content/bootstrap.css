@@ -4559,7 +4559,7 @@ tbody.collapse.show {
 }
 
 .card-deck .card {
-  margin-bottom: 15px;
+    margin-bottom: 15px;
 }
 
 @media (min-width: 576px) {
