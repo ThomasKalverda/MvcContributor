@@ -212,7 +212,7 @@ namespace MvcContributor.Controllers
             }
             catch
             {
-                return View(tmdbPerson);
+                return View(tmdbPerson); 
             }
         }
         public void SaveImage(TmdbPerson tmdbPerson)
