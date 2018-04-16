@@ -7,17 +7,22 @@
 
 <h2>Results from TheMovieDB</h2>
 
-<p>@Model.Count()</p>
+@*<p>@Model.Count()</p>*@
 @using (Html.BeginForm("Index", "Api"))
 {
+<div class="row col-8">
     <div class="col-9 input-group">
-        @Html.TextBox("SearchString"@*, ViewBag.CurrentFilter as string*@, null, new { @class = "form-control", @placeholder = "Search" })
+        @Html.TextBox("SearchString", null, new { @class = "form-control", @placeholder = "Search" })
         <div class="input-group-append">
             <button class="btn btn-outline-warning" type="submit" value="Search">
                 <i class="small material-icons">search</i>
             </button>
         </div>
     </div>
+    <div class="col-3">
+        <button type="button" class="btn btn-outline-primary col-12" value="Back" href="javascript:void(0);" onclick="history.go(-1);">Back</button>
+    </div>
+</div>
 }
 <br>
 @{

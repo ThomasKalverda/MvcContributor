@@ -43,7 +43,7 @@ namespace MvcContributor.Controllers
             {
                 tmdbPersons = tmdbPersons.Where(s => s.Name.Contains(searchString));
             }
-            TempData["lastSearch"] = searchString;
+            //TempData["lastSearch"] = searchString;
             return View("Results",tmdbPersons.ToList());
         }
 
@@ -72,6 +72,7 @@ namespace MvcContributor.Controllers
                 tmdbPerson.ProfilePath = result.profile_path;
                 tmdbPerson.Popularity = result.popularity;
                 tmdbPerson.BirthDate = DateTime.Today;
+                tmdbPerson.ImportDate = DateTime.Today;
                 var SearchData = db.TmdbPersons.Where(x => x.TmdbID == tmdbPerson.TmdbID).FirstOrDefault();
                 if (ModelState.IsValid && SearchData == null)
                 {

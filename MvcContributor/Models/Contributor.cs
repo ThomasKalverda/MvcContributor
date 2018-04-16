@@ -61,6 +61,7 @@ namespace MvcContributor.Models
         public double Popularity { get; set; }
         public string ProfilePath { get; set; }
         public List<ProfileImage> ImageList { get; set; }
+        public DateTime ImportDate { get; set; }
     }
     public class ContributorDBContext : DbContext
     {

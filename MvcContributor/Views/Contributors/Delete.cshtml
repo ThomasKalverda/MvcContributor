@@ -6,51 +6,90 @@
 
 <h2>Delete</h2>
 
-<h3>Are you sure you want to delete this?</h3>
-<div>
-    <h4>Contributor</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
+<h3>Are you sure you want to delete this Contributor?</h3>
+<div class="row">
+    <div class="col-8">
+        <h4>Contributor</h4>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.Name)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.Name)
-        </dd>
+            <dd>
+                @Html.DisplayFor(model => model.Name)
+            </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.BirthDate)
-        </dt>
+            <dt>
+                @Html.DisplayNameFor(model => model.BirthDate)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.BirthDate)
-        </dd>
+            <dd>
+                @Html.DisplayFor(model => model.BirthDate)
+            </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.BirthPlace)
-        </dt>
+            <dt>
+                @Html.DisplayNameFor(model => model.BirthPlace)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.BirthPlace)
-        </dd>
+            <dd>
+                @Html.DisplayFor(model => model.BirthPlace)
+            </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Biography)
-        </dt>
+            <dt>
+                @Html.DisplayNameFor(model => model.Biography)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.Biography)
-        </dd>
+            <dd>
+                @Html.DisplayFor(model => model.Biography)
+            </dd>
 
-    </dl>
+        </dl>
 
-    @using (Html.BeginForm()) {
-        @Html.AntiForgeryToken()
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
 
-        <div class="form-actions no-color">
-            <input type="submit" value="Delete" class="btn btn-default" /> |
-            @Html.ActionLink("Back to List", "Index")
+            @*<div class="form-actions no-color">
+                    <input type="submit" value="Delete" class="btn btn-default" /> |
+                    @Html.ActionLink("Back to List", "Index")
+                </div>*@
+
+            <div class="form-actions row justify-content-center">
+                <div class="col-3">
+                    <input type="submit" value="Delete" class="btn btn-outline-danger" />
+                </div>
+                <div class="col-3">
+                    <button type="button" class="btn btn-outline-primary col-12" value="Cancel" href="javascript:void(0);" onclick="history.go(-1);">Cancel</button>
+                </div>
+            </div>
+        }
+    </div>
+
+    <div class="col-4">
+
+        <div>
+            <h3>Preview headshot</h3>
+            <div style="
+                position: relative;
+                width: 300px;
+                height: 300px;
+                overflow: hidden;
+                border-radius: 50%;">
+                @{
+                    if (Model.ImagePath != null)
+                    {
+                        string imgPath = Model.ImagePath.Remove(0, 1);
+                        <img src="@imgPath" style="width: 100%;height: auto;" alt="IMAGE" />
+                    }
+                    else
+                    {
+                        <img src="~/Content/Images/preview.jpg" style="width: 100%;height: auto;" alt="IMAGE" />
+                    }
+
+                }
+            </div>
+
         </div>
-    }
+    </div>
 </div>
