@@ -8,6 +8,9 @@ using System.Web;
 using System.Web.Mvc;
 using MvcContributor.Models;
 using PagedList;
+using System.Drawing.Imaging;
+using System.Drawing;
+using System.Drawing.Drawing2D;
 
 namespace MvcContributor.Controllers
 {
@@ -67,23 +70,36 @@ namespace MvcContributor.Controllers
             if (file != null && file.ContentLength > 0)
                 try
                 {
-                    string ext = Path.GetExtension(file.FileName);
-                    string filename = Guid.NewGuid().ToString() + ext;
-                    //contributor.ImagePath = Url.Content(Path.Combine(Server.MapPath("~/Content/Images"), filename));
-                    
-                    string path = Path.Combine(Server.MapPath("~/Content/Images"), filename);
-                    file.SaveAs(path);
-                    ViewBag.Message = "File uploaded successfully";
-                    //If updating Edit view
-                    if (contributor.ID != 0)
+                    using (System.Drawing.Image image = System.Drawing.Image.FromStream(file.InputStream, true, true))
                     {
-                        var cont = db.Contributors.FirstOrDefault(x => x.ID == contributor.ID);
-                        if (cont == null) throw new Exception("Invalid id: " + contributor.ID);
-                        cont.ImagePath = "~/Content/Images/" + filename;
-                        //db.Contributors.Attach(contributor);
-                        //db.Entry(contributor).Property(x => x.ImagePath).IsModified = true;
-                        db.SaveChanges();
+                        if (image.Width > 781 && image.Height > 802 )
+                        {
+                            string ext = Path.GetExtension(file.FileName);
+                            string filename = Guid.NewGuid().ToString() + ext;
+                            //contributor.ImagePath = Url.Content(Path.Combine(Server.MapPath("~/Content/Images"), filename));
+                    
+                            string path = Path.Combine(Server.MapPath("~/Content/Images"), filename);
+                            //ResizeAndSave(file, filename, path);
+                            file.SaveAs(path);
+                            ViewBag.Message = "File uploaded successfully";
+                            //If updating Edit view
+                            if (contributor.ID != 0)
+                            {
+                                var cont = db.Contributors.FirstOrDefault(x => x.ID == contributor.ID);
+                                if (cont == null) throw new Exception("Invalid id: " + contributor.ID);
+                                cont.ImagePath = "~/Content/Images/" + filename;
+                                //db.Contributors.Attach(contributor);
+                                //db.Entry(contributor).Property(x => x.ImagePath).IsModified = true;
+                                db.SaveChanges();
+                            }
+                        }
+                        else
+                        {
+                            return Content("<script language='javascript' type='text/javascript'>alert('File is too small. Please upload 782x1080px or larger image.');</script>");
+                            //ViewBag.Message = "File is too small. Please upload 782x1080px image.";
+                        }
                     }
+                    
                     //else
                     //{
                     //    var cont = db.Contributors.FirstOrDefault(x => x.ID == 0);
@@ -102,18 +118,72 @@ namespace MvcContributor.Controllers
             }
             return RedirectToAction("Edit",contributor);
         }
-        // GET: Contributors/Details/5
-        public ActionResult Details(string searchString)
+        
+        public void ResizeAndSave(HttpPostedFileBase file, string filename, string path)
         {
-            var contributors = from c in db.Contributors
-                               select c;
+            System.Drawing.Image srcImage;
+            string temppath = Path.Combine(Server.MapPath("~/Content/Images"), "temp.jpg");
+            file.SaveAs(temppath);
+            srcImage = System.Drawing.Image.FromFile(temppath);
+            bool resize = false;
+            bool crop = false;
+            float ar = (float)srcImage.Height / (float)srcImage.Width;
+            float newWidth = 782;
+            float newHeight = srcImage.Height;
 
-            if (!String.IsNullOrEmpty(searchString))
+            if (srcImage.Width > 782)
             {
-                contributors = contributors.Where(s => s.Name.Contains(searchString));
+                resize = true;
+                newHeight = newWidth * ar;
+            }
+            if (newHeight > 1080)
+            {
+                crop = true;
+            }
+            //If necessary resize image
+            if (resize)
+            {
+                using (var newImage = new Bitmap((int)newWidth, (int)newHeight))
+                using (var graphics = Graphics.FromImage(newImage))
+                {
+                    graphics.SmoothingMode = SmoothingMode.AntiAlias;
+                    graphics.InterpolationMode = InterpolationMode.HighQualityBicubic;
+                    graphics.PixelOffsetMode = PixelOffsetMode.HighQuality;
+                    graphics.DrawImage(srcImage, new Rectangle(0, 0, (int)newWidth, (int)newHeight));
+                    newImage.Save(path, ImageFormat.Jpeg);
+                }
+            }
+            else
+            {
+                srcImage.Save(path, ImageFormat.Jpeg);
+            }
+            //If necessary crop image
+            if (crop)
+            {
+                Rectangle cropRect = new Rectangle(0,0,782,1080);
+                Bitmap src = Image.FromFile(path) as Bitmap;
+                Bitmap target = new Bitmap(cropRect.Width, cropRect.Height);
+
+                using (Graphics g = Graphics.FromImage(target))
+                {
+                    g.SmoothingMode = SmoothingMode.AntiAlias;
+                    g.InterpolationMode = InterpolationMode.HighQualityBicubic;
+                    g.PixelOffsetMode = PixelOffsetMode.HighQuality;
+                    g.DrawImage(src, new Rectangle(0, 0, target.Width, target.Height), cropRect, GraphicsUnit.Pixel);
+                }
+                src.Save(temppath, format: ImageFormat.Jpeg);
+                src.Dispose();
             }
 
-            return View(contributors);
+            if ((!resize) && (!crop))
+            {
+                file.SaveAs(path);
+            }
+               
+            
+            
+
+            
         }
 
         // GET: Contributors/Create

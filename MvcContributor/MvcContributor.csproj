@@ -159,7 +159,6 @@
     <Compile Include="Class\TMDBSearchPerson.cs" />
     <Compile Include="Controllers\ApiController.cs" />
     <Compile Include="Controllers\ContributorsController.cs" />
-    <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -286,12 +285,8 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Home\About.cshtml" />
-    <Content Include="Views\Home\Contact.cshtml" />
-    <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Contributors\Create.cshtml" />
     <Content Include="Views\Contributors\Delete.cshtml" />
-    <Content Include="Views\Contributors\Details.cshtml" />
     <Content Include="Views\Contributors\Edit.cshtml" />
     <Content Include="Views\Contributors\Index.cshtml" />
     <Content Include="Scripts\umd\popper.min.js.map" />
@@ -303,11 +298,9 @@
     <Content Include="Scripts\popper.js.map" />
     <Content Include="Scripts\popper-utils.min.js.map" />
     <Content Include="Scripts\popper-utils.js.map" />
-    <Content Include="Views\Contributors\EditPartial.cshtml" />
     <Content Include="Views\Shared\Table.cshtml" />
     <Content Include="Views\Api\Index.cshtml" />
     <Content Include="Views\Api\Results.cshtml" />
-    <Content Include="Views\Api\Edit.cshtml" />
     <Content Include="Views\Api\PersonDetails.cshtml" />
   </ItemGroup>
   <ItemGroup>
