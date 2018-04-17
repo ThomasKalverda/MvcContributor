@@ -71,7 +71,7 @@ namespace MvcContributor.Controllers
                 tmdbPerson.TmdbID = result.id;
                 tmdbPerson.ProfilePath = result.profile_path;
                 tmdbPerson.Popularity = result.popularity;
-                tmdbPerson.BirthDate = DateTime.Today;
+                tmdbPerson.BirthDate = DateTime.Parse("01-01-1800");
                 tmdbPerson.ImportDate = DateTime.Today;
                 var SearchData = db.TmdbPersons.Where(x => x.TmdbID == tmdbPerson.TmdbID).FirstOrDefault();
                 if (ModelState.IsValid && SearchData == null)
@@ -100,10 +100,14 @@ namespace MvcContributor.Controllers
 
             /*http://json2csharp.com*/
             ResponsePerson rootObject = JsonConvert.DeserializeObject<ResponsePerson>(apiResponse);
-      
+            
             tmdbPerson.Name = rootObject.name;
             tmdbPerson.Biography = rootObject.biography;
-            tmdbPerson.BirthDate = DateTime.Parse(rootObject.birthday);
+            if (rootObject.birthday != null)
+            {
+                tmdbPerson.BirthDate = DateTime.Parse(rootObject.birthday);
+            }
+                        
             tmdbPerson.PlaceOfBirth = rootObject.place_of_birth;
             if (ModelState.IsValid)
             {

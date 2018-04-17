@@ -79,8 +79,8 @@ namespace MvcContributor.Controllers
                             //contributor.ImagePath = Url.Content(Path.Combine(Server.MapPath("~/Content/Images"), filename));
                     
                             string path = Path.Combine(Server.MapPath("~/Content/Images"), filename);
-                            //ResizeAndSave(file, filename, path);
-                            file.SaveAs(path);
+                            ResizeAndSave(file, filename, path);
+                            //file.SaveAs(path);
                             ViewBag.Message = "File uploaded successfully";
                             //If updating Edit view
                             if (contributor.ID != 0)
@@ -116,72 +116,81 @@ namespace MvcContributor.Controllers
             {
                 ViewBag.Message = "You have not specified a file.";
             }
-            return RedirectToAction("Edit",contributor);
+            return RedirectToAction("Edit",contributor.ID);
         }
         
         public void ResizeAndSave(HttpPostedFileBase file, string filename, string path)
         {
-            System.Drawing.Image srcImage;
-            string temppath = Path.Combine(Server.MapPath("~/Content/Images"), "temp.jpg");
-            file.SaveAs(temppath);
-            srcImage = System.Drawing.Image.FromFile(temppath);
-            bool resize = false;
-            bool crop = false;
-            float ar = (float)srcImage.Height / (float)srcImage.Width;
-            float newWidth = 782;
-            float newHeight = srcImage.Height;
+            try
+            {
+                System.Drawing.Image srcImage;
+                string temppath = Path.Combine(Server.MapPath("~/Content/Images"), "temp.jpg");
+                file.SaveAs(temppath);
+                srcImage = System.Drawing.Image.FromFile(temppath);
+                bool resize = false;
+                bool crop = false;
+                float ar = (float)srcImage.Height / (float)srcImage.Width;
+                float newWidth = 782;
+                float newHeight = srcImage.Height;
 
-            if (srcImage.Width > 782)
-            {
-                resize = true;
-                newHeight = newWidth * ar;
-            }
-            if (newHeight > 1080)
-            {
-                crop = true;
-            }
-            //If necessary resize image
-            if (resize)
-            {
-                using (var newImage = new Bitmap((int)newWidth, (int)newHeight))
-                using (var graphics = Graphics.FromImage(newImage))
+                if (srcImage.Width > 782)
                 {
-                    graphics.SmoothingMode = SmoothingMode.AntiAlias;
-                    graphics.InterpolationMode = InterpolationMode.HighQualityBicubic;
-                    graphics.PixelOffsetMode = PixelOffsetMode.HighQuality;
-                    graphics.DrawImage(srcImage, new Rectangle(0, 0, (int)newWidth, (int)newHeight));
-                    newImage.Save(path, ImageFormat.Jpeg);
+                    resize = true;
+                    newHeight = newWidth * ar;
                 }
-            }
-            else
-            {
-                srcImage.Save(path, ImageFormat.Jpeg);
-            }
-            //If necessary crop image
-            if (crop)
-            {
-                Rectangle cropRect = new Rectangle(0,0,782,1080);
-                Bitmap src = Image.FromFile(path) as Bitmap;
-                Bitmap target = new Bitmap(cropRect.Width, cropRect.Height);
-
-                using (Graphics g = Graphics.FromImage(target))
+                if (newHeight > 1080)
                 {
-                    g.SmoothingMode = SmoothingMode.AntiAlias;
-                    g.InterpolationMode = InterpolationMode.HighQualityBicubic;
-                    g.PixelOffsetMode = PixelOffsetMode.HighQuality;
-                    g.DrawImage(src, new Rectangle(0, 0, target.Width, target.Height), cropRect, GraphicsUnit.Pixel);
+                    crop = true;
                 }
-                src.Save(temppath, format: ImageFormat.Jpeg);
-                src.Dispose();
-            }
+                //If necessary resize image
+                if (resize)
+                {
+                    using (var newImage = new Bitmap((int)newWidth, (int)newHeight))
+                    using (var graphics = Graphics.FromImage(newImage))
+                    {
+                        graphics.SmoothingMode = SmoothingMode.AntiAlias;
+                        graphics.InterpolationMode = InterpolationMode.HighQualityBicubic;
+                        graphics.PixelOffsetMode = PixelOffsetMode.HighQuality;
+                        graphics.DrawImage(srcImage, new Rectangle(0, 0, (int)newWidth, (int)newHeight));
+                        newImage.Save(path, ImageFormat.Jpeg);
+                    }
+                }
+                else
+                {
+                    srcImage.Save(path, ImageFormat.Jpeg);
+                }
+                //If necessary crop image
+                if (crop)
+                {
+                    Rectangle cropRect = new Rectangle(0, 0, 782, 1080);
+                    Bitmap src = Image.FromFile(path) as Bitmap;
+                    Bitmap target = new Bitmap(cropRect.Width, cropRect.Height);
 
-            if ((!resize) && (!crop))
-            {
-                file.SaveAs(path);
+                    using (Graphics g = Graphics.FromImage(target))
+                    {
+                        g.SmoothingMode = SmoothingMode.AntiAlias;
+                        g.InterpolationMode = InterpolationMode.HighQualityBicubic;
+                        g.PixelOffsetMode = PixelOffsetMode.HighQuality;
+                        g.DrawImage(src, new Rectangle(0, 0, target.Width, target.Height), cropRect, GraphicsUnit.Pixel);
+                        
+                        src.Dispose();
+                        target.Save(path, ImageFormat.Jpeg);
+                    }
+                    
+
+                }
+
+                if ((!resize) && (!crop))
+                {
+                    file.SaveAs(path);
+                }
+
+
             }
-               
-            
-            
+            catch (Exception ex)
+            {
+
+            }
 
             
         }

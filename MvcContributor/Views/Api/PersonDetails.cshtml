@@ -146,7 +146,7 @@
                 </div>
                 <div class="form-group row justify-content-center">
                     <div class="col-3">
-                        <input type="submit" id="createcontributor" value="Create Contributor" name="SubmitButton" class="btn btn-outline-success" disabled/>
+                        <input type="submit" id="createcontributor" value="Create Contributor" name="SubmitButton" class="btn btn-outline-success"/>
                     </div>
                     <div class="col-3">
 
@@ -159,11 +159,11 @@
             <div class="col-6">
                 @{
 
-        string imgPath = "~/Content/Images/preview.jpg";
-        if (Model.ProfilePath != null)
-        {
-            imgPath = "https://image.tmdb.org/t/p/w500" + Model.ProfilePath;
-        }
+                    string imgPath = "/Content/Images/preview.jpg";
+                    if (Model.ProfilePath != null)
+                    {
+                        imgPath = "https://image.tmdb.org/t/p/w500" + Model.ProfilePath;
+                    }
                 }
                 <div class="row">
                     <div class="col-6">
@@ -199,11 +199,15 @@
                             </div>
 
                         </div>
-                        <p style="margin-left: 50px" id="counter">Profile image on TMDB. There are @Model.ImageList.Count() other images.<br />Press '<' or '>' to cycle through them.</p>
+                        <p style="margin-left: 50px" id="counter">Profile image on TMDB. There are @Model.ImageList.Count() images.<br />Press '<' or '>' to cycle through them.</p>
+                    }
+                    else if (Model.ImageList.Count() == 1)
+                    {
+                        <p style="margin-left: 50px" id="counter">Only 1 image available on TMDB.</p>
                     }
                     else
                     {
-                                <p style="margin-left: 50px" id="counter">Only 1 image available on TMDB.</p>
+                        <p style="margin-left: 50px" id="counter">No images available on TMDB</p>
                     }
 
                 }
