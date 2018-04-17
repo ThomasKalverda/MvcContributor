@@ -38,10 +38,12 @@
 
                 $('#textareafeedback').html(text_remaining + '/250 characters');
             });
-        
+
+
 
         var Counter = 0;
-        var listlength = $('#listLength').prop('value');
+            var listlength = $('#listLength').prop('value');
+            var imagecounter = "";
         $("#Next").click(function () {
             if (Counter < listlength - 1) {
                 Counter++;
@@ -53,9 +55,11 @@
             var savesource = "save" + Counter;
             var gethiddenfield = $('#' + source).prop('value');
             var getsavepath = $('#' + savesource).prop('value');
+            imagecounter = "Image " + (Counter + 1) + "/" + listlength;
             $("#previewimage").attr('src', gethiddenfield);
             $("#completeimage").attr('src', gethiddenfield);
             $("#ProfilePath").val(getsavepath);
+            $("#counter").text(imagecounter);
 
         });
         $("#Prev").click(function () {
@@ -72,9 +76,11 @@
             var savesource = "save" + Counter;
             var gethiddenfield = $('#' + source).prop('value');
             var getsavepath = $('#' + savesource).prop('value');
+            imagecounter = "Image " + (Counter + 1) + "/" + listlength;
             $("#previewimage").attr('src', gethiddenfield);
             $("#completeimage").attr('src', gethiddenfield);
             $("#ProfilePath").val(getsavepath);
+            $("#counter").text(imagecounter);
             });
         });
         
@@ -140,7 +146,7 @@
                 </div>
                 <div class="form-group row justify-content-center">
                     <div class="col-3">
-                        <input type="submit" value="Create Contributor" name="SubmitButton" class="btn btn-outline-success" />
+                        <input type="submit" id="createcontributor" value="Create Contributor" name="SubmitButton" class="btn btn-outline-success" disabled/>
                     </div>
                     <div class="col-3">
 
@@ -153,11 +159,11 @@
             <div class="col-6">
                 @{
 
-            string imgPath = "~/Content/Images/preview.jpg";
-            if (Model.ProfilePath != null)
-            {
-                imgPath = "https://image.tmdb.org/t/p/w500" + Model.ProfilePath;
-            }
+        string imgPath = "~/Content/Images/preview.jpg";
+        if (Model.ProfilePath != null)
+        {
+            imgPath = "https://image.tmdb.org/t/p/w500" + Model.ProfilePath;
+        }
                 }
                 <div class="row">
                     <div class="col-6">
@@ -183,13 +189,25 @@
 
                 </div>
                 <br />
-                <div class="row" style="margin-left: 50px">
-                    <div class="btn-group" role="group">
-                        <button type="button" id="Prev" class="btn btn-outline-info btn-lg">< </button>
-                        <button type="button" id="Next" class="btn btn-outline-info btn-lg"> ></button>
-                    </div>
+                @{
+                    if (Model.ImageList.Count() > 0)
+                    {
+                        <div class="row" style="margin-left: 50px">
+                            <div class="btn-group" role="group">
+                                <button type="button" id="Prev" class="btn btn-outline-info btn-lg">< </button>
+                                <button type="button" id="Next" class="btn btn-outline-info btn-lg"> ></button>
+                            </div>
 
-                </div>
+                        </div>
+                        <p style="margin-left: 50px" id="counter">Profile image on TMDB. There are @Model.ImageList.Count() other images.<br />Press '<' or '>' to cycle through them.</p>
+                    }
+                    else
+                    {
+                                <p style="margin-left: 50px" id="counter">Only 1 image available on TMDB.</p>
+                    }
+
+                }
+
 
             </div>
         </div>
